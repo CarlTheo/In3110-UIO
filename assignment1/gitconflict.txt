@@ -1,14 +1,1 @@
-Here's a line
-
-<<<<<<< HEAD
-Hello World from  A!
-=======
-<<<<<<< HEAD
-Hello World from B!
-======= Hello world from everyone!
-Hello World from A!
->>>>>>> 303aad10feb6f0b62133d6495ad772c50b7aaf0d
->>>>>>> 65012257decb8364160031a300e87ced12596ed4
-
-Here's another line
-
+Hello world from everyone
