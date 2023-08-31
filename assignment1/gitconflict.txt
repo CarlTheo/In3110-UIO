@@ -1,6 +1,10 @@
 Here's a line
 
+<<<<<<< HEAD
 Hello World from B!
+=======
+Hello World from A!
+>>>>>>> 303aad10feb6f0b62133d6495ad772c50b7aaf0d
 
 Here's another line
 
