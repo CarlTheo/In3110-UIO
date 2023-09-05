@@ -3,7 +3,7 @@
 # Include the necessary packages here
 from pathlib import Path
 from typing import Dict, List
-
+import os
 
 def get_diagnostics(dir: str | Path) -> Dict[str, int]:
     """Get diagnostics for the directory tree, with root directory pointed to by dir.
@@ -16,11 +16,7 @@ def get_diagnostics(dir: str | Path) -> Dict[str, int]:
         res (Dict[str, int]) : a dictionary of the findings with following keys: files, subdirectories, .csv files, .txt files, .npy files, .md files, other files.
 
     """
-
-    # Remove if you implement this task
-    raise NotImplementedError("Remove me if you implement this mandatory task")
-
-    # Dictionary to return
+     # Dictionary to return
     res = {
         "files": 0,
         "subdirectories": 0,
@@ -31,18 +27,41 @@ def get_diagnostics(dir: str | Path) -> Dict[str, int]:
         "other files": 0,
     }
 
-    # Remember error handling
-    ...
-
+    dir = Path(dir)
+   
+     # Check if the path exists
+    if not dir.exists():
+        raise NotADirectoryError(f"The path {dir} is not a directory.")
+    
+    # Check if the path is pointing to a directory
+    if not dir.is_dir():
+        raise NotADirectoryError(f"The path {dir} is not a directory.")
+    
     # Traverse the directory and find its contents
-    contents = ...
+    contents = dir.rglob('*')
 
     # Count folders and total num. of files
     for path in contents:
-        ...
+     
+        if path.is_dir(): # Check if the item is a directory
+            res["subdirectories"] += 1
+        elif path.is_file(): # Check if the item is a file 
+            res["files"] += 1
+
+            # Categorize/count the file based on it's extension
+            if path.suffix == '.csv':
+                res[".csv files"] += 1
+            elif path.suffix == '.txt':
+                res[".txt files"] += 1
+            elif path.suffix == '.npy':
+                res[".npy files"] += 1
+            elif path.suffix == '.md':
+                res[".md files"] += 1
+            # Counts all other files as "other files"
+            else:
+                res['other files'] += 1
 
     return res
-
 
 def display_diagnostics(dir: str | Path, contents: Dict[str, int]) -> None:
     """Display diagnostics for the directory tree, with root directory pointed to by dir.

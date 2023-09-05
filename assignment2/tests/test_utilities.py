@@ -28,7 +28,21 @@ def test_get_diagnostics(example_config):
     None
     """
     # Remove if you implement this task
-    raise NotImplementedError("Remove me if you implement this mandatory task")
+    # raise NotImplementedError("Remove me if you implement this mandatory task")
+    res = get_diagnostics(example_config / "pollution_data")
+
+    expected = {
+        "files": 10,
+        "subdirectories": 4,
+        ".csv files": 8,
+        ".txt files": 0,
+        ".npy files": 2,
+        ".md files": 0,
+        "other files": 0,
+    }
+
+    for key in expected:
+        assert res[key] == expected[key]
     ...
 
 
@@ -51,7 +65,7 @@ def test_get_diagnostics_exceptions(exception, dir):
         None
     """
     # Remove if you implement this task
-    raise NotImplementedError("Remove me if you implement this mandatory task")
+    #raise NotImplementedError("Remove me if you implement this mandatory task")
     ...
 
 
