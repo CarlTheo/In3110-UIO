@@ -30,7 +30,8 @@ def test_get_diagnostics(example_config):
     # Remove if you implement this task
     # raise NotImplementedError("Remove me if you implement this mandatory task")
     res = get_diagnostics(example_config / "pollution_data")
-
+    
+    # The expected outcomes    
     expected = {
         "files": 10,
         "subdirectories": 4,
@@ -51,6 +52,8 @@ def test_get_diagnostics(example_config):
     "exception, dir",
     [
         (NotADirectoryError, "Not_a_real_directory"),
+        (TypeError, 2), # Not a path error/input 
+        (NotADirectoryError, Path(__file__).absolute()) #inserting a file and not a directory
         # add more combinations of (exception, dir) here
     ],
 )
@@ -64,9 +67,13 @@ def test_get_diagnostics_exceptions(exception, dir):
     Returns:
         None
     """
+    
+    with pytest.raises(exception):
+        get_diagnostics(dir)
+
+
     # Remove if you implement this task
     #raise NotImplementedError("Remove me if you implement this mandatory task")
-    ...
 
 
 @pytest.mark.task22
