@@ -87,12 +87,19 @@ def display_diagnostics(dir: str | Path, contents: Dict[str, int]) -> None:
     Returns:
         None
     """
+
+    if not dir.exists():
+        raise NotADirectoryError(f"The path {dir} is not a directory.")
+    
+    if not dir.is_dir():
+        raise NotADirectoryError(f"The path {dir} is not pointing to a directory.")
+    
+    if not isinstance(contents, dict):
+        raise TypeError(f"Expected a dictionary as the second parametet, but recived another type.")
+
     print(f"Diagnostics for directory: {dir}\n" + "="*40)
     for key, value in contents.items():
-        if key.capitalize == '.csv' or '.txt' or '.npy' or '.md':
-            print(f"{key.capitalize()}: {value}")
-        else:
-            print(f"other files: {value}")
+        print(f"{key.capitalize()}: {value}")
 
     print("="*40)
 
