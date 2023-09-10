@@ -29,13 +29,13 @@ def get_diagnostics(dir: str | Path) -> Dict[str, int]:
 
     dir = Path(dir)
    
-     # Check if the path exists
+    # Check if the path exists
     if not dir.exists():
         raise NotADirectoryError(f"The path {dir} is not a directory.")
     
     # Check if the path is pointing to a directory
     if not dir.is_dir():
-        raise NotADirectoryError(f"The path {dir} is not a directory.")
+        raise NotADirectoryError(f"The path {dir} is not pointing to a directory.")
     
     # Traverse the directory and find its contents
     contents = dir.rglob('*')
@@ -87,11 +87,17 @@ def display_diagnostics(dir: str | Path, contents: Dict[str, int]) -> None:
     Returns:
         None
     """
-    # Remove if you implement this task
-    raise NotImplementedError("Remove me if you implement this mandatory task")
+    print(f"Diagnostics for directory: {dir}\n" + "="*40)
+    for key, value in contents.items():
+        if key.capitalize == '.csv' or '.txt' or '.npy' or '.md':
+            print(f"{key.capitalize()}: {value}")
+        else:
+            print(f"other files: {value}")
+
+    print("="*40)
 
     # Print the summary to the terminal
-    ...
+    
 
 
 def display_directory_tree(dir: str | Path, maxfiles: int = 3) -> None:
