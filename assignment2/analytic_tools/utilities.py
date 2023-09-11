@@ -137,18 +137,21 @@ def is_gas_csv(path: str | Path) -> bool:
     Returns
          - (bool) : Truth value of whether the file is an original gas file
     """
-    # Remove if you implement this task
-    raise NotImplementedError("Remove me if you implement this mandatory task")
-
+    path = Path(path)
+    
     # Do correct error handling first
+    if not isinstance(path, (str, Path)):
+        raise TypeError(f"Expected a path, but recived a non path-like object.")
+    
+    if path.suffix != ".csv":
+        raise ValueError(f"{path} does not pont to a .csv file.")
+    
     # Extract the filename from the .csv file and check if it is a valid greenhouse gas
-    ...
-
+    
     # List of greenhouse gasses, correct filenames in front of a .csv ending
     gasses = ["CO2", "CH4", "N2O", "SF6", "H2"]
-
-    ...
-
+    
+    return path.stem.upper() in gasses
 
 def get_dest_dir_from_csv_file(dest_parent: str | Path, file_path: str | Path) -> Path:
     """Given a file pointed to by file_path, derive the correct gas_[gas_formula] directory name.

@@ -67,14 +67,11 @@ def test_get_diagnostics_exceptions(exception, dir):
     Returns:
         None
     """
-    
+
     with pytest.raises(exception):
         get_diagnostics(dir)
 
-
-    # Remove if you implement this task
     #raise NotImplementedError("Remove me if you implement this mandatory task")
-
 
 @pytest.mark.task22
 def test_is_gas_csv():
@@ -86,9 +83,28 @@ def test_is_gas_csv():
     Returns:
         None
     """
-    # Remove if you implement this task
-    raise NotImplementedError("Remove me if you implement this mandatory task")
-    ...
+    assert is_gas_csv(Path("CO2.csv")) == True
+    assert is_gas_csv(Path("co2.csv")) == True
+    assert is_gas_csv(Path("Co2.csv")) == True
+
+    with pytest.raises(ValueError):
+        is_gas_csv(Path("CO2.txt"))
+    
+    with pytest.raises(TypeError):
+        is_gas_csv(123)
+
+    assert isinstance(is_gas_csv("CO2.csv"), bool)
+
+    # Testing with things not in the list
+    assert is_gas_csv(Path("H2O.csv")) == False
+    assert is_gas_csv(Path("123_CO2.csv")) == False
+    assert is_gas_csv(Path("??_CO2.csv")) == False
+
+    assert is_gas_csv(Path("CO2.csv")) == True
+    assert is_gas_csv(Path("CH4.csv")) == True
+    assert is_gas_csv(Path("N2O.csv")) == True
+    assert is_gas_csv(Path("SF6.csv")) == True
+    assert is_gas_csv(Path("H2.csv")) == True 
 
 
 @pytest.mark.task22
@@ -97,6 +113,10 @@ def test_is_gas_csv():
     [
         (ValueError, Path(__file__).parent.absolute()),
         # add more combinations of (exception, path) here
+        (ValueError, "file.txt"),
+        (TypeError, 123),
+        (TypeError, None),
+        (ValueError, ""),
     ],
 )
 def test_is_gas_csv_exceptions(exception, path):
@@ -107,10 +127,10 @@ def test_is_gas_csv_exceptions(exception, path):
         path (str or pathlib.Path): The parameter to pass as 'path' to function
 
     Returns:
-        None
+    None
     """
-    # Remove if you implement this task
-    raise NotImplementedError("Remove me if you implement this mandatory task")
+    with pytest.raises(exception):
+        is_gas_csv(path)
     ...
 
 
