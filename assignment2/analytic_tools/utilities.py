@@ -138,7 +138,7 @@ def is_gas_csv(path: str | Path) -> bool:
          - (bool) : Truth value of whether the file is an original gas file
     """
     path = Path(path)
-    
+
     # Do correct error handling first
     if not isinstance(path, (str, Path)):
         raise TypeError(f"Expected a path, but recived a non path-like object.")
@@ -154,6 +154,9 @@ def is_gas_csv(path: str | Path) -> bool:
     return path.stem.upper() in gasses
 
 def get_dest_dir_from_csv_file(dest_parent: str | Path, file_path: str | Path) -> Path:
+
+    
+
     """Given a file pointed to by file_path, derive the correct gas_[gas_formula] directory name.
         Checks if a directory "gas_[gas_formula]", exists and if not, it creates one as a subdirectory under dest_parent.
 
@@ -168,25 +171,45 @@ def get_dest_dir_from_csv_file(dest_parent: str | Path, file_path: str | Path) -
         - (pathlib.Path) : Absolute path to the derived directory
 
     """
-    # Remove if you implement this task
-    raise NotImplementedError("Remove me if you implement this mandatory task")
 
     # Do correct error handling first
 
-    ...
+    if not isinstance(dest_parent, Path) or not isinstance(file_path, Path):
+        raise TypeError("Expected a path, but received a non path-like object.")
+
+    if not dest_parent.exists():
+        raise NotADirectoryError(f"{dest_parent} does not exist.")
+
+    if not file_path.exists():
+        raise ValueError(f"{file_path} does not exist.")
+
+    if not dest_parent.is_dir():
+        raise NotADirectoryError(f"{dest_parent} is not pointing to an existing directory.")
+
+    if not file_path.is_file() or file_path.suffix != '.csv':
+        raise ValueError(f"{file_path} is not a valid .csv file path.")
+
+    gasses = ['CO2', 'CH4', 'NO2', 'SF6', 'H2']
+    if file_path.stem.upper() not in gasses:
+        raise ValueError(f"{file_path.stem} is not a recognized gas")
 
     # If the input file is valid:
+    dest_parent = Path(dest_parent)
+    file_path = Path(file_path)
+    
     # Derive the name of the directory, pattern: gas_[gas_formula] directory
-    dest_name = ...
+    dest_name = f"gas_{file_path.stem.upper()}"
+    
     # Derive its absolute path
-    dest_path = ...
+    dest_path = dest_parent / dest_name
 
     # Check if the directory already exists, and create one of not
     if dest_path.exists():
         return dest_path
-    ...
-
-
+    else:
+        dest_path.mkdir()
+        return dest_path
+    
 def merge_parent_and_basename(path: str | Path) -> str:
     """This function merges the basename and the parent-name of a path into one, uniting them with "_" character.
        It then returns the basename of the resulting path.
