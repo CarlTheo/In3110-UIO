@@ -171,6 +171,8 @@ def get_dest_dir_from_csv_file(dest_parent: str | Path, file_path: str | Path) -
         - (pathlib.Path) : Absolute path to the derived directory
 
     """
+    dest_parent = Path(dest_parent)
+    file_path = Path(file_path)
 
     # Do correct error handling first
 
@@ -194,9 +196,7 @@ def get_dest_dir_from_csv_file(dest_parent: str | Path, file_path: str | Path) -
         raise ValueError(f"{file_path.stem} is not a recognized gas")
 
     # If the input file is valid:
-    dest_parent = Path(dest_parent)
-    file_path = Path(file_path)
-    
+   
     # Derive the name of the directory, pattern: gas_[gas_formula] directory
     dest_name = f"gas_{file_path.stem.upper()}"
     
@@ -219,12 +219,19 @@ def merge_parent_and_basename(path: str | Path) -> str:
 
     Returns:
         - new_base (str) : New basename of the path
-    """
-    # Remove if you implement this task
-    raise NotImplementedError("Remove me if you implement this mandatory task")
 
+    """
+   
+    if not isinstance(path, (str, Path)):
+        raise TypeError("Expected a path, but received a non path-like object.")
+    
+    path_object = Path(path)
+
+    if path_object.parent.name == "":
+        raise ValueError("The provided path does not have a parent directory.")
+    
     # New, merged, basename of the path, which will be the new filename
-    new_base = ...
+    new_base = f"{path_object.parent.name}_{path_object.name}".replace(os.sep, '_')
     return new_base
 
 
