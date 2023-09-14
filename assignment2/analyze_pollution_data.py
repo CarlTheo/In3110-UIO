@@ -4,7 +4,12 @@
 # Import necessary packages here
 from pathlib import Path
 import shutil
-
+from analytic_tools.utilities import (
+    get_dest_dir_from_csv_file,
+    get_diagnostics,
+    is_gas_csv,
+    merge_parent_and_basename,
+)
 
 def restructure_pollution_data(pollution_dir: str | Path, dest_dir: str | Path) -> None:
     """This function searches the tree of pollution_data directory pointed to by pollution_dir for .csv files
@@ -27,28 +32,25 @@ def restructure_pollution_data(pollution_dir: str | Path, dest_dir: str | Path) 
        If the file happens already to exist there, it should be overwritten.
     """
 
+    if not isinstance(pollution_dir, (str, Path)) or not isinstance(dest_dir, (str, Path)):
+        raise TypeError("Expected a path-like object, but received an invalid type.")
+
     pollution_dir = Path(pollution_dir)
     dest_dir = Path(dest_dir)
-   
-    # Do the correct error handling first
-    if not pollution_dir.exists():
-        raise ValueError(f"{pollution_dir} does not exist.")
+
+    if not pollution_dir.exists() or not pollution_dir.is_dir():
+        raise NotADirectoryError(f"{pollution_dir} either doesn't exist or isn't a directory.")
     
-    if not str(dest_dir).endswith('pollution_data_restructured/by_gas'):
-        raise ValueError(f"{dest_dir} is not a valid destination directory.")
+    if not dest_dir.exists() or not dest_dir.is_dir():
+        raise NotADirectoryError(f"{dest_dir} either doesn't exist or isn't a directory.")
 
-    # Contents of pollution_data tree
-    contents = list(pollution_dir.rglob('*'))
-
-    for path in contents:
-        if path.is_file() and is_gas_csv(path):
-            gas_name = path.stem
-
+    for path in pollution_dir.rglob('*'):
+        if path.is_file() and is_gas_csv(path):  
+           
             dest_sub_dir_path = get_dest_dir_from_csv_file(dest_dir, path)
             
             new_file_name = merge_parent_and_basename(path)
             shutil.copy2(path, dest_sub_dir_path / new_file_name)
-
 
 def analyze_pollution_data(work_dir: str | Path) -> None:
     """Do the restructuring of the pollution_data and plot

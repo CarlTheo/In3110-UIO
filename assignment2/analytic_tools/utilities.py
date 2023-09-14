@@ -141,7 +141,7 @@ def is_gas_csv(path: str | Path) -> bool:
         raise TypeError(f"Expected a path, but recived a non path-like object.")
     
     if path.suffix != ".csv":
-        raise ValueError(f"{path} does not pont to a .csv file.")
+        return False
     
     # Extract the filename from the .csv file and check if it is a valid greenhouse gas
     
@@ -185,7 +185,7 @@ def get_dest_dir_from_csv_file(dest_parent: str | Path, file_path: str | Path) -
     if not file_path.is_file() or file_path.suffix != '.csv':
         raise ValueError(f"{file_path} is not a valid .csv file path.")
 
-    gasses = ['CO2', 'CH4', 'NO2', 'SF6', 'H2']
+    gasses = ['CO2', 'CH4', 'N2O', 'SF6', 'H2']
     gas_name_from_file = next((gas for gas in gasses if file_path.stem.upper().startswith(gas)), None)
 
     if not gas_name_from_file:
