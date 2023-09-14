@@ -3,6 +3,7 @@
 
 # Import necessary packages here
 from pathlib import Path
+import shutil
 
 
 def restructure_pollution_data(pollution_dir: str | Path, dest_dir: str | Path) -> None:
@@ -25,17 +26,28 @@ def restructure_pollution_data(pollution_dir: str | Path, dest_dir: str | Path) 
     4. Assign a new name using `merge_parent_and_basename` and copy the file to the new destination.
        If the file happens already to exist there, it should be overwritten.
     """
-    # Remove if you implement this task
-    raise NotImplementedError("Remove me if you implement this mandatory task")
 
+    pollution_dir = Path(pollution_dir)
+    dest_dir = Path(dest_dir)
+   
     # Do the correct error handling first
-    ...
+    if not pollution_dir.exists():
+        raise ValueError(f"{pollution_dir} does not exist.")
+    
+    if not str(dest_dir).endswith('pollution_data_restructured/by_gas'):
+        raise ValueError(f"{dest_dir} is not a valid destination directory.")
 
     # Contents of pollution_data tree
-    contents = ...
+    contents = list(pollution_dir.rglob('*'))
 
     for path in contents:
-        ...
+        if path.is_file() and is_gas_csv(path):
+            gas_name = path.stem
+
+            dest_sub_dir_path = get_dest_dir_from_csv_file(dest_dir, path)
+            
+            new_file_name = merge_parent_and_basename(path)
+            shutil.copy2(path, dest_sub_dir_path / new_file_name)
 
 
 def analyze_pollution_data(work_dir: str | Path) -> None:

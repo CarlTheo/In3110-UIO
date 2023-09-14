@@ -105,8 +105,6 @@ def display_diagnostics(dir: str | Path, contents: Dict[str, int]) -> None:
 
     # Print the summary to the terminal
     
-
-
 def display_directory_tree(dir: str | Path, maxfiles: int = 3) -> None:
     """Display a directory tree, with root directory pointed to by dir.
        Limit the number of files to be displayed for convenience to maxfiles.
@@ -124,7 +122,6 @@ def display_directory_tree(dir: str | Path, maxfiles: int = 3) -> None:
     raise NotImplementedError("Remove me if you implement this bonus task")
 
     ...
-
 
 def is_gas_csv(path: str | Path) -> bool:
     """Checks if a csv file pointed to by path is an original gas statistics file.
@@ -154,9 +151,6 @@ def is_gas_csv(path: str | Path) -> bool:
     return path.stem.upper() in gasses
 
 def get_dest_dir_from_csv_file(dest_parent: str | Path, file_path: str | Path) -> Path:
-
-    
-
     """Given a file pointed to by file_path, derive the correct gas_[gas_formula] directory name.
         Checks if a directory "gas_[gas_formula]", exists and if not, it creates one as a subdirectory under dest_parent.
 
@@ -192,13 +186,15 @@ def get_dest_dir_from_csv_file(dest_parent: str | Path, file_path: str | Path) -
         raise ValueError(f"{file_path} is not a valid .csv file path.")
 
     gasses = ['CO2', 'CH4', 'NO2', 'SF6', 'H2']
-    if file_path.stem.upper() not in gasses:
+    gas_name_from_file = next((gas for gas in gasses if file_path.stem.upper().startswith(gas)), None)
+
+    if not gas_name_from_file:
         raise ValueError(f"{file_path.stem} is not a recognized gas")
 
     # If the input file is valid:
    
     # Derive the name of the directory, pattern: gas_[gas_formula] directory
-    dest_name = f"gas_{file_path.stem.upper()}"
+    dest_name = f"gas_{gas_name_from_file}"
     
     # Derive its absolute path
     dest_path = dest_parent / dest_name
@@ -233,7 +229,6 @@ def merge_parent_and_basename(path: str | Path) -> str:
     # New, merged, basename of the path, which will be the new filename
     new_base = f"{path_object.parent.name}_{path_object.name}".replace(os.sep, '_')
     return new_base
-
 
 def delete_directories(path_list: List[str | Path]) -> None:
     """Prompt the user for permission and delete the objects pointed to by the paths in path_list if

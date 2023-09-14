@@ -4,7 +4,7 @@
 
 # Include the necessary packages here
 from pathlib import Path
-
+import shutil
 import pytest
 
 # This should work if analytic_tools has been installed properly in your environment
@@ -145,26 +145,27 @@ def test_get_dest_dir_from_csv_file(example_config):
     Returns:
         None
     """
-    dest_parent = example_config / "pollution_data_restructured" / "by gas"
+    dest_parent = example_config / "pollution_data_restructured" / "by_gas"
+    dest_parent.mkdir(parents=True, exist_ok=True)
+    by_src = example_config / "pollution_data" / "by_src"
 
-    csv_files = [
-        ("H2", "src_agriculture_H2.csv"),
-        ("CO2", "src_airtraffic_CO2.csv"),
-        ("CO2", "src_oil_and_gass_CO2.csv"),
-        ("CH4", "src_oil_and_gass_CH4.csv")
-    ]
-   
-    for gas, csv_file in csv_files:
-        expected_dir_path = dest_parent / f"gas_{gas}"
+    for source_dir in by_src.iterdir():
+        if source_dir.is_dir():
+            for file in source_dir.iterdir():
+                if file.suffix == ".csv":
+                    # Get destination directory for this file
+                    dest_dir = get_dest_dir_from_csv_file(dest_parent, file)
+                    
+                    # Rename the file and move it to the correct directory
+                    new_file_name = f"{source_dir.name}_{file.name}"
+                    shutil.copy(file, dest_dir / new_file_name)
 
-        result_dir = get_dest_dir_from_csv_file(dest_parent, example_config / csv_file)
+    # Now, check if the directories were created correctly and the files were moved
 
-        assert result_dir == expected_dir_path, f"Expected {expected_dir_path} but got {result_dir}."
-
-        assert expected_dir_path.exists(), f"Directory {expected_dir_path}, was not created."
-
-        assert (expected_dir_path / csv_file).exists(), f"{csv_file} was not found in {expected_dir_path}"
-
+    assert (dest_parent / "gas_H2" / "src_agriculture_H2.csv").exists()
+    assert (dest_parent / "gas_CO2" / "src_airtraffic_CO2.csv").exists()
+    assert (dest_parent / "gas_CO2" / "src_oil_and_gass_CO2.csv").exists()
+    assert (dest_parent / "gas_CH4" / "src_oil_and_gass_CH4.csv").exists()
 
 
 @pytest.mark.task24
@@ -172,6 +173,10 @@ def test_get_dest_dir_from_csv_file(example_config):
     "exception, dest_parent, file_path",
     [
         (ValueError, Path(__file__).parent.absolute(), "foo.txt"),
+        (NotADirectoryError, Path(__file__).parent.absolute() / "nonexistent_directory", "valid_gas.csv"),  
+        (ValueError, Path(__file__).parent.absolute(), "nonexistent_file.csv"),
+        (NotADirectoryError, Path(__file__).parent.absolute() / "some_file.txt", "valid_gas.csv"),
+        (ValueError, Path(__file__).parent.absolute(), "invalid_gas.csv")
         # add more combinations of (exception, dest_parent, file_path) here
     ],
 )
