@@ -3,12 +3,15 @@
 
 # Import necessary packages here
 from pathlib import Path
+import os
 import shutil
+from analytic_tools.plotting import plot_pollution_data
 from analytic_tools.utilities import (
     get_dest_dir_from_csv_file,
     get_diagnostics,
     is_gas_csv,
     merge_parent_and_basename,
+    display_diagnostics,
 )
 
 def restructure_pollution_data(pollution_dir: str | Path, dest_dir: str | Path) -> None:
@@ -71,28 +74,42 @@ def analyze_pollution_data(work_dir: str | Path) -> None:
     - Populate pollution_data_restructured with a subdirectory named figures
     - Make a call to plot_pollution_data
     """
-    # Remove if you implement this task
-    raise NotImplementedError("Remove me if you implement this mandatory task")
+    
+    if not isinstance(work_dir, (str, Path)):
+        raise TypeError("Expected a path-like object, but received an invalid type.")
 
+    work_dir = Path(work_dir)
+
+    if not work_dir.exists() or not work_dir.is_dir():
+        raise NotADirectoryError(f"{work_dir} either doesn't exist or isn't a directory.")
+    
     # Create pollution_data_restructured in work_dir
     pollution_dir = work_dir / "pollution_data"
     restructured_dir = work_dir / "pollution_data_restructured"
-    ...
+    
+    if not pollution_dir.exists() or not pollution_dir.is_dir():
+        raise NotADirectoryError(f"{pollution_dir} either doesn't exist or isn't a directory.")
+    
+    restructured_dir.mkdir(parents=True, exist_ok=True)
+
+    contents = get_diagnostics(pollution_dir)
+
+    display_diagnostics(pollution_dir, contents)
 
     # Populate it with a by_gas sub-folder
     by_gas_dir = restructured_dir / "by_gas"
-    ...
+    by_gas_dir.mkdir(parents=True, exist_ok=True)
 
     # Make a call to restructure_pollution_data
-    ...
+    restructure_pollution_data(pollution_dir, by_gas_dir)
 
     # Populate pollution_data_restructured with a sub folder named figures
     figures_dir = restructured_dir / "figures"
-    ...
+    figures_dir.mkdir(parents=True, exist_ok=True)
 
     # Make a call to plot_pollution_data
-    ...
-
+    plot_pollution_data(by_gas_dir, figures_dir)
+    
 
 def analyze_pollution_data_tmp(work_dir: str | Path) -> None:
     """Do the restructuring of the pollution_data in a temporary directory and create the figures
@@ -116,11 +133,9 @@ def analyze_pollution_data_tmp(work_dir: str | Path) -> None:
     # in the function body
     raise NotImplementedError("Remove me if you implement this optional task")
 
-    ...
-
-
 if __name__ == "__main__":
     # Create a variable holding the path to your working directory
-    work_dir = ...
+    work_dir = os.getcwd()
     # Make a call to analyze_pollution_data
-    ...
+    analyze_pollution_data(work_dir)
+
