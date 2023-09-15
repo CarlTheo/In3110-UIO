@@ -15,7 +15,6 @@ from analytic_tools.utilities import (
     merge_parent_and_basename,
 )
 
-
 @pytest.mark.task12
 def test_get_diagnostics(example_config):
     """Test functionality of get_diagnostics in utilities module
@@ -71,8 +70,6 @@ def test_get_diagnostics_exceptions(exception, dir):
     with pytest.raises(exception):
         get_diagnostics(dir)
 
-    #raise NotImplementedError("Remove me if you implement this mandatory task")
-
 @pytest.mark.task22
 def test_is_gas_csv():
     """Test functionality of is_gas_csv from utilities module
@@ -87,26 +84,24 @@ def test_is_gas_csv():
     assert is_gas_csv(Path("co2.csv")) == True
     assert is_gas_csv(Path("Co2.csv")) == True
 
-    with pytest.raises(ValueError):
-        is_gas_csv(Path("CO2.txt"))
-    
-    with pytest.raises(TypeError):
-        is_gas_csv(123)
-
-    assert isinstance(is_gas_csv("CO2.csv"), bool)
-
-    # Testing with things not in the list
     assert is_gas_csv(Path("H2O.csv")) == False
     assert is_gas_csv(Path("123_CO2.csv")) == False
     assert is_gas_csv(Path("??_CO2.csv")) == False
-
+    
+    assert isinstance(is_gas_csv("CO2.csv"), bool)
+   
     assert is_gas_csv(Path("CO2.csv")) == True
     assert is_gas_csv(Path("CH4.csv")) == True
     assert is_gas_csv(Path("N2O.csv")) == True
     assert is_gas_csv(Path("SF6.csv")) == True
     assert is_gas_csv(Path("H2.csv")) == True 
 
-
+    with pytest.raises(ValueError):
+        is_gas_csv(Path("CO2.txt"))
+    
+    with pytest.raises(TypeError):
+        is_gas_csv(123)
+    
 @pytest.mark.task22
 @pytest.mark.parametrize(
     "exception, path",

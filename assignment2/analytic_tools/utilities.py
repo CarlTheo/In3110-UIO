@@ -138,8 +138,11 @@ def is_gas_csv(path: str | Path) -> bool:
 
     # Do correct error handling first
     if not isinstance(path, (str, Path)):
-        raise TypeError(f"Expected a path, but recived a non path-like object.")
-    
+        raise TypeError(f"Expected a path, but received a non path-like object.")
+     
+    #if path.suffix != ".csv":
+        #raise ValueError(f"{path} does not point to a .csv file.") This raises an error for non .csv, but it is greened out so that the test 31 will work
+
     if path.suffix != ".csv":
         return False
     

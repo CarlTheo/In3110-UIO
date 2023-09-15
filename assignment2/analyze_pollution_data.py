@@ -34,7 +34,7 @@ def restructure_pollution_data(pollution_dir: str | Path, dest_dir: str | Path) 
     4. Assign a new name using `merge_parent_and_basename` and copy the file to the new destination.
        If the file happens already to exist there, it should be overwritten.
     """
-
+  
     if not isinstance(pollution_dir, (str, Path)) or not isinstance(dest_dir, (str, Path)):
         raise TypeError("Expected a path-like object, but received an invalid type.")
 

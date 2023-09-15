@@ -16,11 +16,11 @@ def test_restructure_pollution_data(tmp_workdir: Path):
     Returns:
         - None
     """
-
+    
     pollution_data = tmp_workdir / "pollution_data"
     by_gas = tmp_workdir / "pollution_data_restructured" / "by_gas"
     by_gas.mkdir(parents=True, exist_ok=True)
-
+    
     restructure_pollution_data(pollution_data, by_gas)
 
     # Check by_gas_dir
@@ -42,6 +42,7 @@ def test_restructure_pollution_data(tmp_workdir: Path):
         assert (
             p in possible_gas_dirs
         ), f"{p} is an invalid subdirectory in pollution_data_restructured/by_gas "
+
 
 
 @pytest.mark.task32
