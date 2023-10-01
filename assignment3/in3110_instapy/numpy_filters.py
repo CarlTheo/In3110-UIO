@@ -12,13 +12,13 @@ def numpy_color2gray(image: np.array) -> np.array:
     Returns:
         np.array: gray_image
     """
-
-    gray_image = np.empty_like(image)
+    image_float = image.astype(np.float32)
 
     # Hint: use numpy slicing in order to have fast vectorized code
 
-    gray_image = (image[:,:,0] * 0.21 + image[:,:,1] * 0.72 + image[:,:,2] * 0.07).astype(np.uint8)
+    gray_image = np.round(image_float[:,:,0] * 0.21 + image_float[:,:,1] * 0.72 + image_float[:,:,2] * 0.07).astype(np.uint8)
 
+    gray_image = gray_image.astype(np.uint8)
     # Return image (make sure it's the right type!)
     return gray_image
 
@@ -55,7 +55,7 @@ def numpy_color2sepia(image: np.array, k: float = 1) -> np.array:
     sepia_matrix = k * base_matrix + (1 - k) * np.identity(3)
 
     # Apply the matrix filter using Einstein summation for matrix multiplication
-    sepia_image = np.einsum('...i,ij->...j', image, sepia_matrix.T) # Transponerer matrisen
+    sepia_image = np.einsum('...i,ij->...j', image, sepia_matrix.T) # Transponating the matrix
     
     # Clip the values between 0 and 255
     sepia_image = np.clip(sepia_image, 0, 255).astype(np.uint8)
@@ -70,7 +70,7 @@ if __name__ == "__main__":
 
     image = Image.fromarray(gray_array, "L")  # "L" mode for grayscale images
     image.save("rain_gray.jpg")
-'''
+
 import matplotlib.pyplot as plt
 if __name__ == "__main__":
     input_image_array = np.array(Image.open("test/rain.jpg"))
@@ -83,7 +83,7 @@ if __name__ == "__main__":
     reloaded_image = Image.open("rain_sepia.jpg")
     plt.imshow(reloaded_image)
     plt.show()
-
+'''
 
 
    

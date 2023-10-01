@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import numpy as np
 
-
 def python_color2gray(image: np.array) -> np.array:
     """Convert rgb pixel array to grayscale
 
@@ -50,4 +49,18 @@ def python_color2sepia(image: np.array) -> np.array:
     # Return image
     # don't forget to make sure it's the right type!
     return sepia_image
+'''
+from PIL import Image
+import matplotlib.pyplot as plt
+if __name__ == "__main__":
+    input_image_array = np.array(Image.open("test/rain.jpg"))
+    sepia_array = python_color2sepia(input_image_array)
 
+    # Save the sepia image
+    image = Image.fromarray(sepia_array.astype('uint8'), "RGB")  # "RGB" mode for color images
+    image.save("rain_sepia.jpg")
+
+    reloaded_image = Image.open("rain_sepia.jpg")
+    plt.imshow(reloaded_image)
+    plt.show()
+'''
