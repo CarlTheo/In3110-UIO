@@ -50,6 +50,8 @@ def python_color2sepia(image: np.array) -> np.array:
 
     return sepia_image
 '''
+Made for testing during eveloping::::
+
 from PIL import Image
 import matplotlib.pyplot as plt
 if __name__ == "__main__":
