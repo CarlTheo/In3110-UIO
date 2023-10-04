@@ -63,7 +63,11 @@ def numpy_color2sepia(image: np.array, k: float = 1) -> np.array:
 
     # Return the sepia_image
     return sepia_image
+
+
 '''
+Made for testing during developing:::
+
 if __name__ == "__main__":
     input_image_array = np.array(Image.open("test/rain.jpg"))
    
