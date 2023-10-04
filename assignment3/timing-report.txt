@@ -1,0 +1,8 @@
+I could not find the given txt file, so i made it myself :D
+
+Reference (pure Python) filter time color2gray: 1.81s (calls=3)
+Timing: numpy color2gray: 0.008877754s (speedup=203.60x)
+Timing: numba color2gray: 0.451961s (speedup=4.00x)
+Reference (pure Python) filter time color2sepia: 4.93s (calls=3)
+Timing: numpy color2sepia: 0.04886111s (speedup=100.88x)
+Timing: numba color2sepia: 0.1702429s (speedup=28.95x)

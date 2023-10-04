@@ -12,7 +12,8 @@ def numpy_color2gray(image: np.array) -> np.array:
     Returns:
         np.array: gray_image
     """
-    image_float = image.astype(np.float32)
+    image_array = np.array(image)
+    image_float = image_array.astype(np.float32)
 
     # Hint: use numpy slicing in order to have fast vectorized code
 
@@ -55,7 +56,7 @@ def numpy_color2sepia(image: np.array, k: float = 1) -> np.array:
     sepia_matrix = k * base_matrix + (1 - k) * np.identity(3)
 
     # Apply the matrix filter using Einstein summation for matrix multiplication
-    sepia_image = np.einsum('...i,ij->...j', image, sepia_matrix.T) # Transponating the matrix
+    sepia_image = np.einsum('...i,ij->...j', image, sepia_matrix.T) # Transposing the matrix
     
     # Clip the values between 0 and 255
     sepia_image = np.clip(sepia_image, 0, 255).astype(np.uint8)

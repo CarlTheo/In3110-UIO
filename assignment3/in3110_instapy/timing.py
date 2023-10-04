@@ -72,7 +72,6 @@ def make_reports(filename: str = "test/rain.jpg", calls: int = 3):
                 f"Timing: {implementation} {filter_name}: {filter_time:.7}s ({speedup=:.2f}x)"
             )
 
-
 if __name__ == "__main__":
     # run as `python -m in3110_instapy.timing`
     make_reports()

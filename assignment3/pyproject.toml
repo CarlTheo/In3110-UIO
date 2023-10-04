@@ -21,4 +21,4 @@ dependencies = [
 ]
 
 [project.scripts]
-# instapy = "..."
+# instapy = "in3110_instapy.cli:main"
