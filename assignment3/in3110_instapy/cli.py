@@ -21,7 +21,7 @@ def run_filter(
     implementation: str = "python",
     filter: str = "color2gray",
     scale: int = 1,
-    runtime: bool = False  # <-- Add this flag
+    runtime: bool = False # for -r
 ) -> None:
 
     """Run the selected filter"""

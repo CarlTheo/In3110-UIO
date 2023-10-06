@@ -33,9 +33,6 @@ def time_one(filter_function: Callable, *arguments, calls: int = 3) -> float:
     end_time = time.time()
     average_time = (end_time - start_time) / calls
     return average_time
-
-    # run the filter function `calls` times
-    # return the _average_ time of one call
     ...
 
 def make_reports(filename: str = "test/rain.jpg", calls: int = 3):
@@ -47,7 +44,7 @@ def make_reports(filename: str = "test/rain.jpg", calls: int = 3):
         filename (str): the image file to use
     """
 
-    # load the image
+    # load image
     image = io.read_image(filename)
 
     # iterate through the filters
